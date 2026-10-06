@@ -87,7 +87,7 @@ async def process_category(category: str, run_type: str) -> int:
         except Exception as e:
             logging.warning(f"Failed to normalize item: {e}")
     
-    logging.info(f"[{run_type}] {category}: {len(raw_items)} raw -> {len(processed)} relevant")
+    logging.info(f"[{run_type}] {category}: RAW={len(raw_items)} RELEVANT={len(processed)}")
     
     # Deduplicate and prepare for posting
     to_post = []
@@ -96,13 +96,14 @@ async def process_category(category: str, run_type: str) -> int:
         if not is_posted(item_id):
             to_post.append((item_id, item))
     
-    logging.info(f"[{run_type}] {category}: {len(to_post)} new after dedup")
+    logging.info(f"[{run_type}] {category}: NEW={len(to_post)} (after dedup)")
     
     # Limit per category
     to_post = to_post[:MAX_POSTS_PER_CATEGORY]
     
     if not to_post:
         log_run(run_type, category, items_found=len(raw_items), items_posted=0)
+        logging.info(f"[{run_type}] {category}: SKIP (nothing new to post)")
         return 0
     
     # Render posts
@@ -116,7 +117,7 @@ async def process_category(category: str, run_type: str) -> int:
         mark_posted(item_id, category, item["title"], item["url"], item["source"])
     
     log_run(run_type, category, items_found=len(raw_items), items_posted=sent)
-    logging.info(f"[{run_type}] {category}: posted {sent}")
+    logging.info(f"[{run_type}] {category}: POSTED={sent}/{len(to_post)}")
     
     return sent
 

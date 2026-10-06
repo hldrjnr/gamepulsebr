@@ -5,7 +5,7 @@ import re
 from typing import List, Dict, Any
 from src.config import SOURCES
 
-def fetch_cheapshark_sales(min_discount: int = 50, max_results: int = 50) -> List[Dict[str, Any]]:
+def fetch_cheapshark_sales(min_discount: int = 30, max_results: int = 50) -> List[Dict[str, Any]]:
     """Fetch deals from CheapShark."""
     items = []
     try:

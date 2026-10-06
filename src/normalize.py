@@ -158,9 +158,8 @@ def filter_relevant(item: Dict[str, Any], category: str) -> bool:
             return False
     
     elif category == "news":
-        # Skip reviews, opinions, videos, podcasts
-        if any(skip in title for skip in ["review:", "opinion:", "editorial:", "video:", "podcast:", "hands-on:", "preview:"]):
-            return False
+        # Allow all news - don't filter out reviews, opinions, videos, podcasts
+        pass
     
     elif category == "hardware":
         # Only relevant hardware
