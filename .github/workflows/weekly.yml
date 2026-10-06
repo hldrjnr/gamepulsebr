@@ -1,0 +1,35 @@
+name: GamePulse Bot - Weekly Digest (Sundays 18:00 BRT = 21:00 UTC)
+
+on:
+  schedule:
+    - cron: '0 21 * * 0'  # Sunday 21:00 UTC = 18:00 BRT
+  workflow_dispatch:
+
+jobs:
+  weekly-digest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    
+    env:
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      
+      - name: Run Weekly Digest
+        run: |
+          cd src
+          python weekly_digest.py

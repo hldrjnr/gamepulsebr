@@ -1,0 +1,9 @@
+requests==2.32.3
+python-telegram-bot==21.6
+feedparser==6.0.11
+beautifulsoup4==4.12.3
+lxml==5.2.2
+apscheduler==3.10.4
+python-dotenv==1.0.1
+sqlite-utils==3.37
+tenacity==8.3.0
