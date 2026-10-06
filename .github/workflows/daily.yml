@@ -32,8 +32,7 @@ jobs:
       
       - name: Run Daily Job
         run: |
-          cd src
-          python main.py daily
+          python -m src.main daily
       
       - name: Upload database as artifact
         if: always()

@@ -32,13 +32,11 @@ jobs:
       
       - name: Run Weekly Job (all categories)
         run: |
-          cd src
-          python main.py weekly
+          python -m src.main weekly
       
       - name: Run Weekly Digest
         run: |
-          cd src
-          python main.py digest
+          python -m src.main digest
       
       - name: Upload database as artifact
         if: always()

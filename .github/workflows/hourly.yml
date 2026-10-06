@@ -32,8 +32,7 @@ jobs:
       
       - name: Run Hourly Job
         run: |
-          cd src
-          python main.py hourly
+          python -m src.main hourly
       
       - name: Upload database as artifact
         if: always()
