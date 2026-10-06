@@ -1,20 +1,19 @@
-name: GamePulse Bot - Main Run (Every 3 hours)
+name: GamePulse Bot - Daily (All categories except weekly-only)
 
 on:
   schedule:
-    # Runs every 3 hours: 00:00, 03:00, 06:00, 09:00, 12:00, 15:00, 18:00, 21:00 UTC
-    # Which is 21:00, 00:00, 03:00, 06:00, 09:00, 12:00, 15:00, 18:00 BRT
-    - cron: '0 */3 * * *'
-  workflow_dispatch:  # Manual trigger
+    - cron: '30 6 * * *'  # Daily at 06:30 UTC = 03:30 BRT
+  workflow_dispatch:
 
 jobs:
-  run-bot:
+  daily:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 30
     
     env:
       TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
       TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
+      DB_PATH: data/gamepulse.db
     
     steps:
       - name: Checkout repository
@@ -31,15 +30,15 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
       
-      - name: Run GamePulse Bot
+      - name: Run Daily Job
         run: |
           cd src
-          python bot.py
+          python main.py daily
       
-      - name: Upload database as artifact (for debugging)
+      - name: Upload database as artifact
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: gamepulse-db
+          name: gamepulse-db-daily
           path: data/gamepulse.db
           retention-days: 7

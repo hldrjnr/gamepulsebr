@@ -1,14 +1,14 @@
-name: GamePulse Bot - Weekly (All categories + Weekly Digest)
+name: GamePulse Bot - Hourly (Freebies, News, Sales)
 
 on:
   schedule:
-    - cron: '0 21 * * 0'  # Sunday 21:00 UTC = 18:00 BRT
+    - cron: '0 * * * *'  # Every hour at minute 0
   workflow_dispatch:
 
 jobs:
-  weekly:
+  hourly:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 20
     
     env:
       TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
@@ -30,20 +30,15 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
       
-      - name: Run Weekly Job (all categories)
+      - name: Run Hourly Job
         run: |
           cd src
-          python main.py weekly
-      
-      - name: Run Weekly Digest
-        run: |
-          cd src
-          python main.py digest
+          python main.py hourly
       
       - name: Upload database as artifact
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: gamepulse-db-weekly
+          name: gamepulse-db-hourly
           path: data/gamepulse.db
-          retention-days: 30
+          retention-days: 7
