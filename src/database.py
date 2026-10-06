@@ -5,7 +5,9 @@ from contextlib import contextmanager
 from pathlib import Path
 from typing import Optional, List, Dict
 
-from src.config import DB_PATH
+from src.config import DB_PATH as DB_PATH_STR
+
+DB_PATH = Path(DB_PATH_STR)
 
 def init_db():
     """Initialize SQLite database with required tables."""
